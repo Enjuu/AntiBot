@@ -1,19 +1,12 @@
 package enjuu.nobotoverload;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * Tool for checking if the Server get's a ddos
@@ -34,31 +27,26 @@ public class App extends Thread
 	// Thread for checking
 	public App() throws Exception{
 	    while(true) {
-	    	System.out.println();
-	    	System.out.println("Start check if Server get's botted");
-	    	 String server = "https://c."+Config.getString("api") + "/api/v1/onlineUsers";
-		     URL objurl = new URL(server);
-		     HttpsURLConnection connect = (HttpsURLConnection) objurl.openConnection();
-		     connect.setRequestMethod("GET");
-		     connect.setRequestProperty("User-Agent", "Mozilla/5.0");
-		     BufferedReader in = new BufferedReader(
-		             new InputStreamReader(connect.getInputStream()));
-		     String inputLine;
-		     StringBuffer response = new StringBuffer();
-		     while ((inputLine = in.readLine()) != null) {
-		     	response.append(inputLine);
-		     }
-		     in.close();
+	    	 System.out.println();
+	    	 System.out.println("Start check if Server get's botted");
 		     JSONParser parser = new JSONParser();
-		     Object obj2 = parser.parse(response.toString());
+		     
+		     // GET Online Users
+		     Object obj2 = parser.parse(HttpRequest.getHttpString("https://c."+Config.getString("api") + "/api/v1/onlineUsers"));
+		     
+		     // Parse to JSON
 		     JSONObject jsonObject = (JSONObject) obj2;
 		     long result = (long) jsonObject.get("result");
+		     
 		     int res = Integer.parseInt(new StringBuilder().append(result).toString());
 		     int i = res - beforestate;
+		     
+		     // Check how many Users are Online
 		     if(i > Config.getLong("howmuchusers")) {
 		    	 System.out.println("Server get's botted, disabling registrations...");
 		    	 BotsAreOnline();
 		     }
+		     
 		     System.out.println("Finished checking if Server get's botted only a diffrence of " +i);
 		     beforestate = res;
 		     App.sleep(Config.getLong("threadtimeoutbetweencheck"));
@@ -84,22 +72,13 @@ public class App extends Thread
     	t.start();
     }
     
-    public static int getOnlineUsers() throws IOException, ParseException {
-    	String server = "https://c."+Config.getString("api") + "/api/v1/onlineUsers";
-	     URL objurl = new URL(server);
-	     HttpsURLConnection connect = (HttpsURLConnection) objurl.openConnection();
-	     connect.setRequestMethod("GET");
-	     connect.setRequestProperty("User-Agent", "Mozilla/5.0");
-	     BufferedReader in = new BufferedReader(
-	             new InputStreamReader(connect.getInputStream()));
-	     String inputLine;
-	     StringBuffer response = new StringBuffer();
-	     while ((inputLine = in.readLine()) != null) {
-	     	response.append(inputLine);
-	     }
-	     in.close();
-	     JSONParser parser = new JSONParser();
-	     Object obj2 = parser.parse(response.toString());
+    public static int getOnlineUsers() throws Exception {
+    	
+    	JSONParser parser = new JSONParser();
+    	// GET Online Users
+	     Object obj2 = parser.parse(HttpRequest.getHttpString("https://c."+Config.getString("api") + "/api/v1/onlineUsers"));
+	     
+	     // Parse to JSON
 	     JSONObject jsonObject = (JSONObject) obj2;
 	     long result = (long) jsonObject.get("result");
 	     int res = Integer.parseInt(new StringBuilder().append(result).toString());
