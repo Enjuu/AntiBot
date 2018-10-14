@@ -1,1 +1,1 @@
-{"mysqlip":"localhost","howmuchusers":10,"mysqlusername":"root","api":"enjuu.click","mysqlport":"3306","threadtimeoutbetweencheck":8000,"mysqldatabase":"ripple","mysqlpassword":""}
+{"mysqlip":"localhost","webhook":"https://discordapp.com/api/webhooks/501100627066355774/jy4HqRirVA2VZFTri2DZs0HZC1LjZYfTa8pIBn1IH9gpV_R_7o50AU9ATIgYpGBrD0cN","howmuchusers":0,"mysqlusername":"root","api":"come-inside.me","mysqlport":"3306","threadtimeoutbetweencheck":8000,"mysqldatabase":"ripple","mysqlpassword":"NaN"}

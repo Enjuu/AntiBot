@@ -41,9 +41,10 @@ public class Config {
 			obj.put("mysqlport", "3306");
 			obj.put("mysqldatabase", "ripple");
 			obj.put("mysqlusername", "root");
-			obj.put("mysqlpassword", "");
+			obj.put("mysqlpassword", "NaN");
 			obj.put("threadtimeoutbetweencheck", 8000);
 			obj.put("howmuchusers", 10);
+			obj.put("webhook", "NaN");
 			try (FileWriter file = new FileWriter("config.json")) {
 				file.write(obj.toJSONString());
 				System.out.println("[INFO]: Successfully created Config...");

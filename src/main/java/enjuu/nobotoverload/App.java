@@ -55,6 +55,7 @@ public class App extends Thread
 	
     public static void main( String[] args ) throws Exception
     {
+
     	// Splash Screen
     	System.out.println("█▀▀▄ █▀▀█ █▀▀▄ █▀▀█ ▀▀█▀▀ █▀▀ █▀▀█ █▀▀▄ █░░█ █▀▄▀█ █▀▀█ █▀▀█ █▀▀\r\n" + 
     			"█░░█ █░░█ █▀▀▄ █░░█ ░░█░░ ▀▀█ █▄▄█ █░░█ █▄▄█ █░▀░█ █░░█ █▄▄▀ █▀▀\r\n" + 
@@ -85,7 +86,7 @@ public class App extends Thread
 	     return res;
     }
     
-    public void BotsAreOnline() {
+    public void BotsAreOnline() throws Exception {
     	System.out.println("Connecting database for disable registrations...");
     	try (Connection connection = DriverManager.getConnection(url, username, password)) {
     	    System.out.println("Database connected!");
@@ -99,8 +100,21 @@ public class App extends Thread
     	} catch (SQLException e) {
     	    throw new IllegalStateException("Cannot connect the database!", e);
     	}
-    	
-    	
-
+    	HttpRequest.sendOfflineWebhook();
+    	App.sleep(600000);
+    	System.out.println("Connecting database for enable registrations...");
+    	try (Connection connection = DriverManager.getConnection(url, username, password)) {
+    	    System.out.println("Database connected!");
+    	    String query = "UPDATE system_settings\r\n" + 
+    	    		"SET value_int = 0\r\n" + 
+    	    		"WHERE id = 5;";
+    	      PreparedStatement preparedStmt = connection.prepareStatement(query);
+    	      preparedStmt.executeUpdate();
+    	      
+    	      connection.close();
+    	} catch (SQLException e) {
+    	    throw new IllegalStateException("Cannot connect the database!", e);
+    	}
+    	HttpRequest.sendOnlineWebhook();
     }
 }
