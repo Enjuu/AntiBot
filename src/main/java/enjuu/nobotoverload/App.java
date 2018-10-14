@@ -17,7 +17,8 @@ import org.json.simple.parser.ParseException;
 
 /**
  * Tool for checking if the Server get's a ddos
- * and disable registrations.
+ * and disable registrations. ~Please fork GitHub rep if you use this Tool
+ * 
  */
 
 public class App extends Thread
@@ -31,7 +32,6 @@ public class App extends Thread
 	public static int beforestate = 0;
 	
 	// Thread for checking
-	@SuppressWarnings("static-access")
 	public App() throws Exception{
 	    while(true) {
 	    	System.out.println();
@@ -57,31 +57,34 @@ public class App extends Thread
 		     int i = res - beforestate;
 		     if(i > Config.getLong("howmuchusers")) {
 		    	 System.out.println("Server get's botted, disabling registrations...");
-		    	 istoomany();
+		    	 BotsAreOnline();
 		     }
 		     System.out.println("Finished checking if Server get's botted only a diffrence of " +i);
 		     beforestate = res;
-		     this.sleep(Config.getLong("threadtimeoutbetweencheck"));
+		     App.sleep(Config.getLong("threadtimeoutbetweencheck"));
 	    }
 	  }
 	
     public static void main( String[] args ) throws Exception
     {
+    	// Splash Screen
     	System.out.println("█▀▀▄ █▀▀█ █▀▀▄ █▀▀█ ▀▀█▀▀ █▀▀ █▀▀█ █▀▀▄ █░░█ █▀▄▀█ █▀▀█ █▀▀█ █▀▀\r\n" + 
     			"█░░█ █░░█ █▀▀▄ █░░█ ░░█░░ ▀▀█ █▄▄█ █░░█ █▄▄█ █░▀░█ █░░█ █▄▄▀ █▀▀\r\n" + 
     			"▀░░▀ ▀▀▀▀ ▀▀▀░ ▀▀▀▀ ░░▀░░ ▀▀▀ ▀░░▀ ▀░░▀ ▄▄▄█ ▀░░░▀ ▀▀▀▀ ▀░▀▀ ▀▀▀");
-    	System.out.println("- written by Kazuki");
+    	System.out.println("~ written by Kazuki");
+    	
+    	// Config generator
     	Config.createConfig();
     	Config.loadConfig();
     	
-    	beforestate = nurdadamitesnichtnervt();
+    	beforestate = getOnlineUsers();
     	
     	// Loop for checking
     	Thread t = new App();
     	t.start();
     }
     
-    public static int nurdadamitesnichtnervt() throws IOException, ParseException {
+    public static int getOnlineUsers() throws IOException, ParseException {
     	String server = "https://c."+Config.getString("api") + "/api/v1/onlineUsers";
 	     URL objurl = new URL(server);
 	     HttpsURLConnection connect = (HttpsURLConnection) objurl.openConnection();
@@ -103,7 +106,7 @@ public class App extends Thread
 	     return res;
     }
     
-    public void istoomany() {
+    public void BotsAreOnline() {
     	System.out.println("Connecting database for disable registrations...");
     	try (Connection connection = DriverManager.getConnection(url, username, password)) {
     	    System.out.println("Database connected!");
