@@ -1,5 +1,5 @@
 # AntiBot
-Programmed for ripple based servers. As some people (mempler + sunpy + kazuki) are botting servers without reason, this exists.
+Programmed for ripple based servers. As some people (mempler + sunpy) are botting servers without reason, this exists.
 Latest binaries: https://github.com/Enjuu/AntiBot/releases 
 ## Configurable AntiBot
 ```json
